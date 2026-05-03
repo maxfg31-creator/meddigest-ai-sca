@@ -1,0 +1,17 @@
+<?php
+/**
+ * Ownership checks for later milestones.
+ *
+ * @package MedDigest\AiSca
+ */
+
+namespace MedDigest\AiSca\Security;
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+final class Ownership
+{
+}
+

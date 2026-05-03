@@ -1,0 +1,13 @@
+{
+  "name": "meddigest/meddigest-ai-sca",
+  "description": "Custom MedDigest AI SCA WordPress plugin.",
+  "type": "wordpress-plugin",
+  "autoload": {
+    "psr-4": {
+      "MedDigest\\AiSca\\": "includes/"
+    }
+  },
+  "require": {},
+  "require-dev": {}
+}
+
