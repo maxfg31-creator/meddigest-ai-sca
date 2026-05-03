@@ -120,6 +120,72 @@
   font-weight: 700;
 }
 
+.mdsca-account-tab {
+  display: grid;
+  gap: 20px;
+}
+
+.mdsca-account-summary {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: center;
+}
+
+.mdsca-account-summary > div {
+  padding: 16px;
+  border: 1px solid #d8dee4;
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+.mdsca-account-summary strong {
+  display: block;
+  font-size: 1.5rem;
+}
+
+.mdsca-account-history__list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mdsca-account-history__list li {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px;
+  border: 1px solid #d8dee4;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.mdsca-account-history__list span {
+  display: block;
+  color: #64748b;
+}
+
+.mdsca-account-history__pagination {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-top: 16px;
+}
+
+@media (max-width: 720px) {
+  .mdsca-account-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .mdsca-account-history__list li {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
 @media (max-width: 700px) {
   .mdsca-case-cta {
     align-items: flex-start;

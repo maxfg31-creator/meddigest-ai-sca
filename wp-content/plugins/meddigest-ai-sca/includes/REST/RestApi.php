@@ -30,5 +30,6 @@ final class RestApi
         (new ConsentController())->register_routes();
         (new StationController())->register_routes();
         (new MockController())->register_routes();
+        (new HistoryController())->register_routes();
     }
 }

@@ -10,6 +10,7 @@ namespace MedDigest\AiSca\REST;
 use MedDigest\AiSca\Credits\CreditService;
 use MedDigest\AiSca\MemberPress\EligibilityService;
 use MedDigest\AiSca\Mock\MockLaunchService;
+use MedDigest\AiSca\Practice\HistoryService;
 use MedDigest\AiSca\Practice\StationAttemptService;
 
 if (!defined('ABSPATH')) {
@@ -69,6 +70,7 @@ final class MeStateController
         $eligibility = new EligibilityService();
         $credits     = new CreditService();
         $attempts    = new StationAttemptService();
+        $history     = new HistoryService();
         $mocks       = new MockLaunchService();
 
         $has_premium = $eligibility->user_has_sca_cases_premium($user_id);
@@ -89,7 +91,7 @@ final class MeStateController
                     'total'     => (int) $balance['total'],
                 ],
                 'pricing_credit_packs_visible' => $has_premium,
-                'history_exists'            => false,
+                'history_exists'            => $history->history_exists($user_id),
                 'active_station'            => $active ? [
                     'attempt_uuid' => $active['attempt_uuid'],
                     'case_post_id' => absint($active['case_post_id']),

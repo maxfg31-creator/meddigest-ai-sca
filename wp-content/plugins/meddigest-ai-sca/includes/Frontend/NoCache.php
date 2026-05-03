@@ -18,9 +18,8 @@ final class NoCache
      */
     public function send()
     {
-        if (function_exists('nocache_headers')) {
+        if (function_exists('nocache_headers') && !headers_sent()) {
             nocache_headers();
         }
     }
 }
-

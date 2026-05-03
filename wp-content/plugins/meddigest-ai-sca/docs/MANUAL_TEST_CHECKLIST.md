@@ -67,3 +67,20 @@
 - Confirm final results are generated asynchronously and `/results/` polls without triggering re-grading on old completed results.
 - Confirm completed mock results remain owner-accessible after SCA Cases Premium lapses.
 - Confirm all archive behavior passes with existing Code Snippets active.
+
+## Milestone 4
+
+- Confirm AI Practice appears inside the existing MemberPress account area for active SCA Cases Premium users.
+- Confirm existing MemberPress account tabs and any snippet-powered account customizations still work.
+- Confirm AI Practice remains visible after SCA Cases Premium lapses when the account has AI history.
+- Confirm the tab shows available credits, locked credits, Buy AI Credits, active station resume, active mock resume, and paginated history.
+- Confirm `/wp-json/meddigest-ai/v1/history` requires login and nonce, returns only the current user's history, and paginates with 20 items by default.
+- Confirm completed station feedback and completed mock results remain owner-accessible after premium lapse.
+- Confirm new station/mock launches remain blocked after premium lapse.
+- Confirm direct logged-out feedback/result URLs redirect to login and return to the same URL.
+- Confirm another account cannot access stored station feedback or mock results.
+- Confirm old station feedback and mock result pages render stored data only and do not trigger OpenAI calls.
+- Confirm WordPress personal data export includes MedDigest AI SCA history summaries.
+- Confirm WordPress personal data erasure removes/anonymizes MedDigest AI SCA practice data.
+- Confirm owner-only `/sca-ai/*` routes and the AI Practice tab send no-cache headers.
+- Confirm final staging sign-off is performed with all existing Code Snippets active unless a specific snippet was intentionally migrated and retired.

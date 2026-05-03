@@ -65,7 +65,7 @@ final class RouteRegistrar
         }
 
         if (function_exists('nocache_headers')) {
-            nocache_headers();
+            (new NoCache())->send();
         }
 
         $map = [

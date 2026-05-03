@@ -15,9 +15,11 @@ use MedDigest\AiSca\Assets\FrontendAssets;
 use MedDigest\AiSca\Database\Installer;
 use MedDigest\AiSca\Frontend\RouteRegistrar;
 use MedDigest\AiSca\Frontend\Shortcodes;
+use MedDigest\AiSca\MemberPress\AccountTab;
 use MedDigest\AiSca\MemberPress\TransactionHandler;
 use MedDigest\AiSca\Mock\MockResultsAggregator;
 use MedDigest\AiSca\Practice\FeedbackJob;
+use MedDigest\AiSca\Privacy\PrivacyTools;
 use MedDigest\AiSca\REST\RestApi;
 
 if (!defined('ABSPATH')) {
@@ -60,9 +62,11 @@ final class Plugin
         (new CaseConfigSync())->register();
         (new RouteRegistrar())->register();
         (new Shortcodes())->register();
+        (new AccountTab())->register();
         (new TransactionHandler())->register();
         (new FeedbackJob())->register();
         (new MockResultsAggregator())->register();
+        (new PrivacyTools())->register();
         (new RestApi())->register();
 
         if (is_admin()) {
