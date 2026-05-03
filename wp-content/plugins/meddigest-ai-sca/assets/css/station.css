@@ -1,4 +1,104 @@
-.mdsca-station {
-  display: block;
+.mdsca-ai-template {
+  margin: 0;
+  background: #f8fafc;
+  color: #1f2937;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
+.mdsca-station {
+  width: min(920px, calc(100% - 2rem));
+  margin: 2rem auto;
+  padding: 1.5rem;
+  border: 1px solid #d8dee4;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.mdsca-station h1 {
+  margin: 0 0 0.5rem;
+}
+
+.mdsca-badge {
+  display: inline-flex;
+  margin: 0 0 1rem;
+  padding: 0.3rem 0.55rem;
+  border-radius: 999px;
+  background: #e6fffb;
+  color: #115e59;
+  font-weight: 700;
+}
+
+.mdsca-panel {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid #d8dee4;
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+.mdsca-panel label {
+  display: block;
+  margin: 0.5rem 0;
+}
+
+.mdsca-timer {
+  margin: 1.25rem 0;
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.mdsca-live-audio {
+  min-height: 3rem;
+}
+
+.mdsca-back-link {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: #0f766e;
+  font-weight: 700;
+}
+
+.mdsca-feedback-grades {
+  display: grid;
+  gap: 8px 16px;
+  grid-template-columns: minmax(180px, 1fr) auto;
+  margin: 20px 0 0;
+}
+
+.mdsca-feedback-grades dt,
+.mdsca-feedback-grades dd {
+  margin: 0;
+}
+
+.mdsca-feedback-grades dt {
+  color: #475569;
+}
+
+.mdsca-feedback-grades dd {
+  font-weight: 700;
+  text-align: right;
+}
+
+.mdsca-feedback-list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding-left: 20px;
+}
+
+.mdsca-feedback-list li span {
+  display: block;
+  margin-top: 4px;
+  color: #475569;
+}
+
+@media (max-width: 640px) {
+  .mdsca-feedback-grades {
+    grid-template-columns: 1fr;
+  }
+
+  .mdsca-feedback-grades dd {
+    text-align: left;
+  }
+}

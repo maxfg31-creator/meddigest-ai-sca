@@ -19,6 +19,8 @@ final class Admin
     public function register()
     {
         (new SettingsPage())->register();
+        (new CaseColumns())->register();
+        (new CaseFilters())->register();
+        (new MigrationHelper())->register();
     }
 }
-

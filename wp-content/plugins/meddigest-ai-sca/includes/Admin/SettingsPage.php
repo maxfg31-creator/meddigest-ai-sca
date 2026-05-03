@@ -118,8 +118,33 @@ final class SettingsPage
         echo '</form>';
 
         echo '<hr />';
+        $this->render_migration_helper();
+        echo '<hr />';
         (new SnippetConflictChecker())->render_report();
         echo '</div>';
     }
-}
 
+    /**
+     * Render migration helper panel.
+     */
+    private function render_migration_helper()
+    {
+        $updated = isset($_GET['mdsca_migrated_cases']) ? absint($_GET['mdsca_migrated_cases']) : null;
+
+        echo '<h2>' . esc_html__('SCA Case AI Field Migration Helper', 'meddigest-ai-sca') . '</h2>';
+
+        if (null !== $updated) {
+            printf(
+                '<div class="notice notice-success inline"><p>%s</p></div>',
+                esc_html(sprintf(__('Migration helper prefilled %d case records. Review all AI fields before approving mock-ready cases.', 'meddigest-ai-sca'), $updated))
+            );
+        }
+
+        echo '<p>' . esc_html__('This helper cautiously copies known existing Doctor Notes, Patient Notes, Marking Scheme, and Example Consultation meta into MedDigest AI SCA fields when those fields are empty. It does not approve cases automatically.', 'meddigest-ai-sca') . '</p>';
+        echo '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '">';
+        echo '<input type="hidden" name="action" value="mdsca_migrate_case_ai_fields">';
+        wp_nonce_field('mdsca_migrate_case_ai_fields');
+        submit_button(__('Prefill Empty AI Case Fields', 'meddigest-ai-sca'), 'secondary');
+        echo '</form>';
+    }
+}

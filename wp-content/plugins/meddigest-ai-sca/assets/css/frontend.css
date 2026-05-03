@@ -87,3 +87,42 @@
   background: #fff7ed;
 }
 
+.mdsca-case-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 1.25rem 0;
+  padding: 1rem;
+  border: 1px solid #d8dee4;
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+.mdsca-case-cta h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.25rem;
+}
+
+.mdsca-case-cta p {
+  margin: 0;
+}
+
+.mdsca-case-cta__action {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.mdsca-link {
+  color: #0f766e;
+  font-weight: 700;
+}
+
+@media (max-width: 700px) {
+  .mdsca-case-cta {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

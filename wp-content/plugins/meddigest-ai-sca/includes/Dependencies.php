@@ -57,10 +57,9 @@ final class Dependencies
 
         if (!self::has_acf()) {
             Notices::render(
-                __('MedDigest AI SCA expects Advanced Custom Fields for case editor fields in later milestones. Milestone 1 can run without ACF, but case AI settings will be unavailable.', 'meddigest-ai-sca'),
+                __('MedDigest AI SCA expects Advanced Custom Fields for case editor fields. Case AI settings will be unavailable until ACF is active.', 'meddigest-ai-sca'),
                 'warning'
             );
         }
     }
 }
-

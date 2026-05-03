@@ -37,6 +37,26 @@ final class LedgerRepository
     }
 
     /**
+     * Find a ledger row by UUID.
+     *
+     * @param string $ledger_uuid Ledger UUID.
+     */
+    public function find_by_uuid($ledger_uuid)
+    {
+        global $wpdb;
+
+        $tables = Schema::tables();
+
+        return $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT * FROM {$tables['ledger']} WHERE ledger_uuid = %s LIMIT 1",
+                $ledger_uuid
+            ),
+            ARRAY_A
+        );
+    }
+
+    /**
      * Insert a ledger entry.
      *
      * @param array $entry Ledger entry.
@@ -79,4 +99,3 @@ final class LedgerRepository
         return false !== $result;
     }
 }
-

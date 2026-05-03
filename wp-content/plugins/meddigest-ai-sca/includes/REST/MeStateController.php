@@ -9,6 +9,7 @@ namespace MedDigest\AiSca\REST;
 
 use MedDigest\AiSca\Credits\CreditService;
 use MedDigest\AiSca\MemberPress\EligibilityService;
+use MedDigest\AiSca\Practice\StationAttemptService;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -66,9 +67,11 @@ final class MeStateController
         $user_id     = get_current_user_id();
         $eligibility = new EligibilityService();
         $credits     = new CreditService();
+        $attempts    = new StationAttemptService();
 
         $has_premium = $eligibility->user_has_sca_cases_premium($user_id);
         $balance     = $credits->get_balance($user_id);
+        $active      = $attempts->get_active_attempt_for_user($user_id);
 
         $usable_credits = $has_premium ? (int) $balance['available'] : 0;
         $locked_credits = $has_premium ? (int) $balance['locked'] : (int) $balance['total'];
@@ -84,7 +87,12 @@ final class MeStateController
                 ],
                 'pricing_credit_packs_visible' => $has_premium,
                 'history_exists'            => false,
-                'active_station'            => null,
+                'active_station'            => $active ? [
+                    'attempt_uuid' => $active['attempt_uuid'],
+                    'case_post_id' => absint($active['case_post_id']),
+                    'status'       => $active['status'],
+                    'resume_url'   => home_url('/sca-ai/station/' . $active['attempt_uuid'] . '/live/'),
+                ] : null,
                 'active_mock'               => null,
                 'cta'                       => [
                     'full_mock' => $this->full_mock_cta($has_premium, $usable_credits),

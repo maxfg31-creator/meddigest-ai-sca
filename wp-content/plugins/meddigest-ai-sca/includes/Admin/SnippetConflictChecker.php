@@ -25,9 +25,11 @@ final class SnippetConflictChecker
 
         return [
             'meddigest_ai_credit_packs',
-            'meddigest_ai_full_mock_strip',
             'meddigest_ai_case_cta',
+            'meddigest_ai_full_mock_strip',
             'meddigest-ai/v1',
+            'mdsca_ai_route',
+            'mdsca_attempt_uuid',
             ProductMappingService::OPTION_NAME,
             'meddigest_ai_sca',
             'mdsca_',
@@ -112,4 +114,3 @@ final class SnippetConflictChecker
         echo '</tbody></table>';
     }
 }
-

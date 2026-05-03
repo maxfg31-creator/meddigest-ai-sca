@@ -8,6 +8,7 @@
 namespace MedDigest\AiSca;
 
 use MedDigest\AiSca\Database\Installer;
+use MedDigest\AiSca\Frontend\RouteRegistrar;
 use MedDigest\AiSca\MemberPress\ProductMappingService;
 
 if (!defined('ABSPATH')) {
@@ -23,6 +24,10 @@ final class Activation
     {
         (new Installer())->install();
         ProductMappingService::ensure_default_settings();
+        (new RouteRegistrar())->add_rewrite_rules();
+
+        if (function_exists('flush_rewrite_rules')) {
+            flush_rewrite_rules();
+        }
     }
 }
-

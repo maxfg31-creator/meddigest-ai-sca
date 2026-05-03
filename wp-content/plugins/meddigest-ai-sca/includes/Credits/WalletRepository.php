@@ -110,5 +110,128 @@ final class WalletRepository
 
         return $this->get_balance($user_id);
     }
-}
 
+    /**
+     * Move credits from available to locked.
+     *
+     * @param int $user_id User ID.
+     * @param int $credits Credits.
+     */
+    public function hold_available($user_id, $credits)
+    {
+        global $wpdb;
+
+        $credits = absint($credits);
+
+        if ($credits <= 0) {
+            return false;
+        }
+
+        $this->ensure_wallet($user_id);
+
+        $tables = Schema::tables();
+        $now    = Clock::mysql_utc();
+        $result = $wpdb->query(
+            $wpdb->prepare(
+                "UPDATE {$tables['wallets']}
+                SET balance_available = balance_available - %d,
+                    balance_locked = balance_locked + %d,
+                    updated_at = %s
+                WHERE user_id = %d AND balance_available >= %d",
+                $credits,
+                $credits,
+                $now,
+                $user_id,
+                $credits
+            )
+        );
+
+        if (false === $result || 0 === $result) {
+            return false;
+        }
+
+        return $this->get_balance($user_id);
+    }
+
+    /**
+     * Commit previously held credits.
+     *
+     * @param int $user_id User ID.
+     * @param int $credits Credits.
+     */
+    public function commit_locked($user_id, $credits)
+    {
+        global $wpdb;
+
+        $credits = absint($credits);
+
+        if ($credits <= 0) {
+            return false;
+        }
+
+        $this->ensure_wallet($user_id);
+
+        $tables = Schema::tables();
+        $now    = Clock::mysql_utc();
+        $result = $wpdb->query(
+            $wpdb->prepare(
+                "UPDATE {$tables['wallets']}
+                SET balance_locked = balance_locked - %d,
+                    updated_at = %s
+                WHERE user_id = %d AND balance_locked >= %d",
+                $credits,
+                $now,
+                $user_id,
+                $credits
+            )
+        );
+
+        if (false === $result || 0 === $result) {
+            return false;
+        }
+
+        return $this->get_balance($user_id);
+    }
+
+    /**
+     * Release held credits back to available balance.
+     *
+     * @param int $user_id User ID.
+     * @param int $credits Credits.
+     */
+    public function release_locked($user_id, $credits)
+    {
+        global $wpdb;
+
+        $credits = absint($credits);
+
+        if ($credits <= 0) {
+            return false;
+        }
+
+        $this->ensure_wallet($user_id);
+
+        $tables = Schema::tables();
+        $now    = Clock::mysql_utc();
+        $result = $wpdb->query(
+            $wpdb->prepare(
+                "UPDATE {$tables['wallets']}
+                SET balance_available = balance_available + %d,
+                    balance_locked = balance_locked - %d,
+                    updated_at = %s
+                WHERE user_id = %d AND balance_locked >= %d",
+                $credits,
+                $credits,
+                $now,
+                $user_id,
+                $credits
+            )
+        );
+
+        if (false === $result || 0 === $result) {
+            return false;
+        }
+
+        return $this->get_balance($user_id);
+    }
+}
