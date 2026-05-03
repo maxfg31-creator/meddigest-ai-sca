@@ -20,6 +20,7 @@ final class Installer
      */
     public function register()
     {
+        add_action('init', [$this, 'maybe_upgrade'], 1);
         add_action('admin_init', [$this, 'maybe_upgrade']);
     }
 
@@ -51,4 +52,3 @@ final class Installer
         }
     }
 }
-

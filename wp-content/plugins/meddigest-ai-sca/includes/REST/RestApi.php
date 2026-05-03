@@ -29,5 +29,6 @@ final class RestApi
         (new MeStateController())->register_routes();
         (new ConsentController())->register_routes();
         (new StationController())->register_routes();
+        (new MockController())->register_routes();
     }
 }

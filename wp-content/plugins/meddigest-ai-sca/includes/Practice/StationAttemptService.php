@@ -8,6 +8,7 @@ use MedDigest\AiSca\Credits\CreditHoldService;
 use MedDigest\AiSca\Credits\Idempotency;
 use MedDigest\AiSca\Database\Schema;
 use MedDigest\AiSca\MemberPress\EligibilityService;
+use MedDigest\AiSca\Mock\MockLaunchService;
 use MedDigest\AiSca\Support\Clock;
 use MedDigest\AiSca\Support\Uuid;
 
@@ -51,6 +52,11 @@ final class StationAttemptService
         $active = $this->get_active_attempt_for_user($user_id);
         if ($active) {
             return new \WP_Error('meddigest_ai_sca_active_session_exists', __('You already have an active AI practice session.', 'meddigest-ai-sca'), ['status' => 409, 'attempt_uuid' => $active['attempt_uuid']]);
+        }
+
+        $active_mock = (new MockLaunchService())->get_active_mock_for_user($user_id);
+        if ($active_mock) {
+            return new \WP_Error('meddigest_ai_sca_active_mock_exists', __('You already have an active Full Mock SCA session.', 'meddigest-ai-sca'), ['status' => 409, 'mock_uuid' => $active_mock['mock_uuid']]);
         }
 
         $attempt_uuid = Uuid::v4();

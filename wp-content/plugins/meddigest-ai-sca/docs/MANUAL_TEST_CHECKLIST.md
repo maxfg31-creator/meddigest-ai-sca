@@ -43,3 +43,27 @@
 - Confirm transient feedback errors retry automatically up to 3 times.
 - Confirm completed/cancelled feedback routes are owner-only and do not require active premium.
 - Confirm duplicate start clicks and multi-tab attempts do not create concurrent active station sessions.
+
+## Milestone 3
+
+- Configure exactly 12 Clinical Experience Group term IDs in Settings > MedDigest AI SCA.
+- Confirm the Full Mock coverage panel shows missing groups until each group has at least one published, AI-enabled, mock-pool-enabled, approved case.
+- Confirm `[meddigest_ai_full_mock_strip]` renders once on `/sca-cases/` below intro and above filters/case loading.
+- Confirm the strip hydrates from `/wp-json/meddigest-ai/v1/me/state` and cached public HTML does not contain user-specific credit state.
+- Confirm public/non-premium users see Join SCA Cases Premium.
+- Confirm premium users with 0-11 available credits see Buy AI Credits and the 12-credit note.
+- Confirm premium users with 12+ available credits see Start Full Mock SCA.
+- Confirm an active mock shows Resume Full Mock SCA and blocks new station starts.
+- Confirm `/sca-ai/mock/launch/` requires login, active SCA Cases Premium, 12 credits, coverage, microphone readiness, and checkboxes.
+- Confirm missing group coverage blocks launch cleanly for users and shows admin coverage detail.
+- Confirm launch allocates exactly 12 unique cases, one per configured group, and snapshots selected case content.
+- Confirm launching creates a 12-credit hold and commits it when station 1 reading begins.
+- Confirm `/sca-ai/mock/{mock_uuid}/run/` is owner-only and server-time phase driven.
+- Confirm each station has 3 minutes reading, 12 minutes live consultation, and a 10-minute break after station 6.
+- Confirm there is no pause, skip, end-early button, or feedback between stations.
+- Confirm every live station opens a fresh Realtime client session and no one long session spans the full mock.
+- Confirm no live transcript appears and transcript events are stored as text/JSON only.
+- Confirm refresh/reconnect resumes from server time without restoring missed time.
+- Confirm final results are generated asynchronously and `/results/` polls without triggering re-grading on old completed results.
+- Confirm completed mock results remain owner-accessible after SCA Cases Premium lapses.
+- Confirm all archive behavior passes with existing Code Snippets active.

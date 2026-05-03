@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
 
 final class Schema
 {
-    public const DB_VERSION = '2026-05-03.2';
+    public const DB_VERSION = '2026-05-03.3';
 
     /**
      * Get plugin table names.
@@ -30,6 +30,8 @@ final class Schema
             'case_marking'  => $wpdb->prefix . 'meddigest_ai_case_marking_items',
             'attempts'      => $wpdb->prefix . 'meddigest_ai_attempts',
             'feedback'      => $wpdb->prefix . 'meddigest_ai_feedback',
+            'mock_runs'     => $wpdb->prefix . 'meddigest_ai_mock_runs',
+            'mock_stations' => $wpdb->prefix . 'meddigest_ai_mock_stations',
             'consents'      => $wpdb->prefix . 'meddigest_ai_consents',
         ];
     }
@@ -177,6 +179,56 @@ final class Schema
                 UNIQUE KEY attempt_uuid (attempt_uuid),
                 KEY processing_status (processing_status),
                 KEY updated_at (updated_at)
+            ) {$charset_collate};",
+            "CREATE TABLE {$tables['mock_runs']} (
+                id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+                mock_uuid char(36) NOT NULL,
+                user_id bigint(20) unsigned NOT NULL,
+                status varchar(40) NOT NULL DEFAULT 'running',
+                membership_snapshot_json longtext NULL,
+                hold_ledger_uuid char(36) NOT NULL DEFAULT '',
+                commit_ledger_uuid char(36) NOT NULL DEFAULT '',
+                schedule_json longtext NULL,
+                station_snapshot_json longtext NULL,
+                results_json longtext NULL,
+                started_at datetime NULL,
+                current_phase varchar(40) NOT NULL DEFAULT 'reading',
+                current_station int(11) NOT NULL DEFAULT 1,
+                phase_ends_at datetime NULL,
+                created_at datetime NOT NULL,
+                updated_at datetime NOT NULL,
+                PRIMARY KEY  (id),
+                UNIQUE KEY mock_uuid (mock_uuid),
+                KEY user_status_created (user_id, status, created_at),
+                KEY status_updated (status, updated_at),
+                KEY current_phase (current_phase),
+                KEY phase_ends_at (phase_ends_at)
+            ) {$charset_collate};",
+            "CREATE TABLE {$tables['mock_stations']} (
+                id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+                mock_uuid char(36) NOT NULL,
+                station_number int(11) NOT NULL,
+                attempt_uuid char(36) NOT NULL DEFAULT '',
+                case_post_id bigint(20) unsigned NOT NULL,
+                mock_primary_group_term_id bigint(20) unsigned NOT NULL DEFAULT 0,
+                reading_start_at datetime NULL,
+                live_start_at datetime NULL,
+                hard_stop_at datetime NULL,
+                ended_at datetime NULL,
+                grade_status varchar(40) NOT NULL DEFAULT 'pending',
+                transcript_json longtext NULL,
+                feedback_json longtext NULL,
+                station_snapshot_json longtext NULL,
+                created_at datetime NOT NULL,
+                updated_at datetime NOT NULL,
+                PRIMARY KEY  (id),
+                UNIQUE KEY mock_station (mock_uuid, station_number),
+                KEY mock_uuid (mock_uuid),
+                KEY station_number (station_number),
+                KEY attempt_uuid (attempt_uuid),
+                KEY case_post_id (case_post_id),
+                KEY mock_primary_group_term_id (mock_primary_group_term_id),
+                KEY grade_status (grade_status)
             ) {$charset_collate};",
             "CREATE TABLE {$tables['consents']} (
                 id bigint(20) unsigned NOT NULL AUTO_INCREMENT,

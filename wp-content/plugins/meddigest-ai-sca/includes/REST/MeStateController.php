@@ -9,6 +9,7 @@ namespace MedDigest\AiSca\REST;
 
 use MedDigest\AiSca\Credits\CreditService;
 use MedDigest\AiSca\MemberPress\EligibilityService;
+use MedDigest\AiSca\Mock\MockLaunchService;
 use MedDigest\AiSca\Practice\StationAttemptService;
 
 if (!defined('ABSPATH')) {
@@ -68,10 +69,12 @@ final class MeStateController
         $eligibility = new EligibilityService();
         $credits     = new CreditService();
         $attempts    = new StationAttemptService();
+        $mocks       = new MockLaunchService();
 
         $has_premium = $eligibility->user_has_sca_cases_premium($user_id);
         $balance     = $credits->get_balance($user_id);
         $active      = $attempts->get_active_attempt_for_user($user_id);
+        $active_mock = $mocks->get_active_mock_for_user($user_id);
 
         $usable_credits = $has_premium ? (int) $balance['available'] : 0;
         $locked_credits = $has_premium ? (int) $balance['locked'] : (int) $balance['total'];
@@ -93,9 +96,16 @@ final class MeStateController
                     'status'       => $active['status'],
                     'resume_url'   => home_url('/sca-ai/station/' . $active['attempt_uuid'] . '/live/'),
                 ] : null,
-                'active_mock'               => null,
+                'active_mock'               => $active_mock ? [
+                    'mock_uuid'   => $active_mock['mock_uuid'],
+                    'status'      => $active_mock['status'],
+                    'phase'       => $active_mock['current_phase'],
+                    'resume_url'  => MockLaunchService::STATUS_PROCESSING === $active_mock['status']
+                        ? home_url('/sca-ai/mock/' . $active_mock['mock_uuid'] . '/results/')
+                        : home_url('/sca-ai/mock/' . $active_mock['mock_uuid'] . '/run/'),
+                ] : null,
                 'cta'                       => [
-                    'full_mock' => $this->full_mock_cta($has_premium, $usable_credits),
+                    'full_mock' => $this->full_mock_cta($has_premium, $usable_credits, $active_mock),
                 ],
             ]
         );
@@ -107,8 +117,18 @@ final class MeStateController
      * @param bool $has_premium    Has active SCA Cases Premium.
      * @param int  $usable_credits Usable credits.
      */
-    private function full_mock_cta($has_premium, $usable_credits)
+    private function full_mock_cta($has_premium, $usable_credits, $active_mock = null)
     {
+        if ($active_mock) {
+            return [
+                'state'  => 'resume_mock',
+                'label'  => __('Resume Full Mock SCA', 'meddigest-ai-sca'),
+                'target' => MockLaunchService::STATUS_PROCESSING === $active_mock['status']
+                    ? home_url('/sca-ai/mock/' . $active_mock['mock_uuid'] . '/results/')
+                    : home_url('/sca-ai/mock/' . $active_mock['mock_uuid'] . '/run/'),
+            ];
+        }
+
         if (!$has_premium) {
             return [
                 'state'  => 'join_premium',

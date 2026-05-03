@@ -2,6 +2,7 @@
 namespace MedDigest\AiSca\REST;
 
 use MedDigest\AiSca\Database\Schema;
+use MedDigest\AiSca\Mock\MockLaunchService;
 use MedDigest\AiSca\Practice\StationAttemptService;
 use MedDigest\AiSca\Support\Clock;
 
@@ -58,11 +59,13 @@ final class ConsentController
         $object_uuid = sanitize_text_field($request->get_param('object_uuid'));
         $user_id     = get_current_user_id();
 
-        if ('station_attempt' !== $object_type) {
+        if (!in_array($object_type, ['station_attempt', 'mock_run'], true)) {
             return new \WP_Error('meddigest_ai_sca_invalid_consent_type', __('Unsupported consent object type.', 'meddigest-ai-sca'), ['status' => 400]);
         }
 
-        $attempt = (new StationAttemptService())->get_owned_attempt($user_id, $object_uuid);
+        $attempt = 'mock_run' === $object_type
+            ? (new MockLaunchService())->get_owned_mock($user_id, $object_uuid)
+            : (new StationAttemptService())->get_owned_attempt($user_id, $object_uuid);
 
         if (is_wp_error($attempt)) {
             return $attempt;

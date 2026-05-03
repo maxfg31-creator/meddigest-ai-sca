@@ -8,6 +8,7 @@
 namespace MedDigest\AiSca\Admin;
 
 use MedDigest\AiSca\MemberPress\ProductMappingService;
+use MedDigest\AiSca\Mock\MockCoverageService;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -55,6 +56,16 @@ final class SettingsPage
                 'default'           => ProductMappingService::defaults(),
             ]
         );
+
+        register_setting(
+            self::GROUP,
+            MockCoverageService::OPTION_GROUP_IDS,
+            [
+                'type'              => 'array',
+                'sanitize_callback' => [MockCoverageService::class, 'sanitize_group_ids'],
+                'default'           => [],
+            ]
+        );
     }
 
     /**
@@ -72,7 +83,7 @@ final class SettingsPage
 
         echo '<div class="wrap mdsca-admin">';
         echo '<h1>' . esc_html__('MedDigest AI SCA', 'meddigest-ai-sca') . '</h1>';
-        echo '<p>' . esc_html__('Milestone 1 settings map MemberPress products to the fixed MedDigest AI SCA credit rules. Do not hard-code product IDs in templates or snippets.', 'meddigest-ai-sca') . '</p>';
+        echo '<p>' . esc_html__('These settings map MemberPress products and Full Mock coverage rules to the fixed MedDigest AI SCA implementation. Do not hard-code product IDs or group IDs in templates or snippets.', 'meddigest-ai-sca') . '</p>';
 
         echo '<form method="post" action="options.php">';
         settings_fields(self::GROUP);
@@ -114,9 +125,24 @@ final class SettingsPage
 
         echo '</tbody></table>';
 
+        echo '<h2>' . esc_html__('Full Mock Clinical Experience Groups', 'meddigest-ai-sca') . '</h2>';
+        echo '<table class="form-table" role="presentation"><tbody>';
+        echo '<tr><th scope="row">' . esc_html__('12 group term IDs', 'meddigest-ai-sca') . '</th><td>';
+        $group_ids = MockCoverageService::sanitize_group_ids(get_option(MockCoverageService::OPTION_GROUP_IDS, []));
+        printf(
+            '<textarea name="%1$s" rows="3" class="large-text code">%2$s</textarea>',
+            esc_attr(MockCoverageService::OPTION_GROUP_IDS),
+            esc_textarea(implode(', ', $group_ids))
+        );
+        echo '<p class="description">' . esc_html__('Enter exactly 12 Clinical Experience Group term IDs, separated by commas. Full Mock SCA allocates one approved mock-ready AI case from each group.', 'meddigest-ai-sca') . '</p>';
+        echo '</td></tr>';
+        echo '</tbody></table>';
+
         submit_button(__('Save MedDigest AI SCA Settings', 'meddigest-ai-sca'));
         echo '</form>';
 
+        echo '<hr />';
+        (new MockCoverageDashboard())->render();
         echo '<hr />';
         $this->render_migration_helper();
         echo '<hr />';

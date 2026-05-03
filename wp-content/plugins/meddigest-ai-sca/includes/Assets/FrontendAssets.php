@@ -40,9 +40,32 @@ final class FrontendAssets
             MEDDIGEST_AI_SCA_VERSION
         );
 
+        wp_register_style(
+            'meddigest-ai-sca-mock',
+            MEDDIGEST_AI_SCA_URL . 'assets/css/mock.css',
+            ['meddigest-ai-sca-frontend'],
+            MEDDIGEST_AI_SCA_VERSION
+        );
+
+        wp_register_script(
+            'meddigest-ai-sca-me-state',
+            MEDDIGEST_AI_SCA_URL . 'assets/js/me-state.js',
+            [],
+            MEDDIGEST_AI_SCA_VERSION,
+            true
+        );
+
         wp_register_script(
             'meddigest-ai-sca-station-live',
             MEDDIGEST_AI_SCA_URL . 'assets/js/station-live.js',
+            [],
+            MEDDIGEST_AI_SCA_VERSION,
+            true
+        );
+
+        wp_register_script(
+            'meddigest-ai-sca-mock-runner',
+            MEDDIGEST_AI_SCA_URL . 'assets/js/mock-runner.js',
             [],
             MEDDIGEST_AI_SCA_VERSION,
             true

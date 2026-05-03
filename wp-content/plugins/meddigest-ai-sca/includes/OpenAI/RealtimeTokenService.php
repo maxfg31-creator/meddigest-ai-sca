@@ -30,7 +30,7 @@ final class RealtimeTokenService
         $snapshot = is_array($snapshot) ? $snapshot : [];
         $voice    = sanitize_key($snapshot['voice_id'] ?? '');
         $voice    = $voice ?: apply_filters('meddigest_ai_sca_default_realtime_voice', 'marin');
-        $model    = apply_filters('meddigest_ai_sca_realtime_model', defined('MEDDIGEST_AI_SCA_REALTIME_MODEL') ? MEDDIGEST_AI_SCA_REALTIME_MODEL : 'gpt-realtime');
+        $model    = apply_filters('meddigest_ai_sca_realtime_model', defined('MEDDIGEST_AI_SCA_REALTIME_MODEL') ? MEDDIGEST_AI_SCA_REALTIME_MODEL : 'gpt-realtime-1.5');
 
         $body = [
             'expires_after' => [

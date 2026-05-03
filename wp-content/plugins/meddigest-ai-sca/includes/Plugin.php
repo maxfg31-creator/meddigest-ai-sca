@@ -16,6 +16,7 @@ use MedDigest\AiSca\Database\Installer;
 use MedDigest\AiSca\Frontend\RouteRegistrar;
 use MedDigest\AiSca\Frontend\Shortcodes;
 use MedDigest\AiSca\MemberPress\TransactionHandler;
+use MedDigest\AiSca\Mock\MockResultsAggregator;
 use MedDigest\AiSca\Practice\FeedbackJob;
 use MedDigest\AiSca\REST\RestApi;
 
@@ -61,6 +62,7 @@ final class Plugin
         (new Shortcodes())->register();
         (new TransactionHandler())->register();
         (new FeedbackJob())->register();
+        (new MockResultsAggregator())->register();
         (new RestApi())->register();
 
         if (is_admin()) {
